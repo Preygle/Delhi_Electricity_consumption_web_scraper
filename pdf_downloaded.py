@@ -1,3 +1,6 @@
+#code to download pdfs from a specific timeline for electricity consumption in India
+#site used 'https://report.grid-india.in/psp_report.php'
+
 import requests
 import os
 from datetime import datetime, timedelta
@@ -5,27 +8,22 @@ from datetime import datetime, timedelta
 
 def generate_urls():
     # Start and end dates
-    start_date = datetime(2024, 9, 1)
-    end_date = datetime(2024, 9, 7)
+    start_date = datetime(YYYY, MM, DD)
+    end_date = datetime(YYYY, MM, DD)
 
     # List to store URLs
     url_list = []
-
-    # Generate URLs for each date from start_date to end_date
+    
     current_date = start_date
     while current_date <= end_date:
-        # Format the date in 'dd.mm.yy'
         dd_mm_yy = current_date.strftime('%d.%m.%y')
-        # Extract the month name without the year (2024 was removed)
+        # Extract the month name without the year for required pdf link expression
         month_yyyy = current_date.strftime('%B')
 
-        # Create the URL
+        # Create the URL RegEx
         url = f"https://report.grid-india.in/ReportData/Daily%20Report/PSP%20Report/2024-2025/{month_yyyy}%202024/{dd_mm_yy}_NLDC_PSP.pdf"
         url_list.append(url)
-
-        # Check if the day is the 23rd
-
-        # Move to the next date
+        #iterating days
         current_date += timedelta(days=1)
 
     return url_list
@@ -38,9 +36,11 @@ urls = generate_urls()
 for url in urls:
     print(url)
 
+#directory to store all the pdfs
 output_dir = "sep"
 
-if not os.path.exists(output_dir):  # Create the output directory if it doesn't exist
+# Create the output directory if it doesn't exist
+if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 for url in urls:
